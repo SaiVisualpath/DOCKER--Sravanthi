@@ -1,0 +1,214 @@
+Virtualisation with Hypervisor:
+==============================
+1)what is virtualisation process? Why do we use it?
+--------------------------------------------------
+Virtualisation is nothing but exposing or creating IT services using software and hardware resources on the physical server make 
+available to users and applications to multiple environments on the compute cloud or cloud environment.
+WHAT IS HYPERVISOR? WHY DO WE USE IT? WHAT ARE THE TYPES OF HYPERVISOR?
+======================================================================
+1.Hypervisor is a software installed on top of the physical serveron and used to create VMs where we run workloads inside the VMs.
+2.There are two types of hypervisors:
+  1.Hardware Hypervisor also known as Native or Bare-Metal Hypervisor.
+  2.Software Hypervisor also known as Host OS Hypervisor.
+3.Difference between two hypervisors:
+ 1.Hardware hypervisor vitualise hardware resources and software hypervisor virtualise software like OS. The name itself 
+defines the deifference b/w two hypervisors.
+ 2.Hardware hypervisor is installed directly on the physical server whereas software hypervisor is installed on top the host 
+   operating system on the physical server.
+ 3.Hardware hypervisor has direct access to the hardware resources on the physical server and host OS.whereas in software 
+   hypervisor we make use of the host OS with the seperate guest os installed on VMs to communicate with the resources on 
+   the physical server.
+ 4.There is a drawback with type2 hypervisor.If the host OS goes down with any issue the entire hypervisor,VM's goes down and 
+   The status of workloads wil also be down.There is a risk of losing entire data on VM if OS crashes down. 
+
+Limitations of Hyperviosor:
+==========================
+1.Monitoring or provisioning VM is a time consuming process compared to containers.
+2.Allocation of resources is not dynamic.
+3.When resources are allocated to the VMs,major portion of the resource utilization is consumed by OS and the least portion which
+  is left consumed by an application which makes application process slow.
+4.we can run no of Vms on the single piece of pyshical infracture but lesser compared to containers
+5.On pysical server we install one OS and run multiple applications whereas in VMs we install different or same guest OS on 
+  every VM to run workloads for different purpose.
+
+SETUP OR CREATE VM USING HYPERVISOR:
+===================================
+HOW DO WE CREATE A VM ON THE VIRTUAL VM BOX OR HYPERVISOR?
+========================================================= 
+Note:Here in the example I'm using type2 hypervisor and unbuntu OS with the version 22.04 LTS.Always prefer Ubuntu 18,20,22 LTS(Long Term Service)
+for production level services.Ubuntu with version 21 for testing purpose.
+->>Architecture: X86_64(amd64),arm64,armhf and s390x.
+->>We have multiple types of type2 hypervisor like VM Ware workstation, Oracle Solaris Zones,Oracle VM Server for x86,VMware Fusion
+   etc.Here in the example I have taken Oracle VirtualBox.
+->>In Ubuntu OS we create additional user and password to login VM whereas in other OS like redhat,federo etc we create password 
+   for the root user.Not required of addtional user to be created.
+
+1.Goto the browser and search for Oracle VM Box with version 7.0.6.It is type2 hypervisor which is installed on windows host OS 
+  on the physical server.
+2.Once you click on the download link exe.file executes on your windows local system.Double click on the exe file of VM Box.
+  Follow the instructions and perform installation process.
+3.Once installation process has been completed,open VM box and start creating VMs with help of the type2 hypervisor Oracle 
+  VirtualBox.
+4.Now goto browser and search for an OS to be installed on VM as Guest OS.Select Platform according to your base system 
+  requirements and Download latest version.Here in the expample I have taken Ubuntu 22.04 LTS.
+5.Download ISO image file of Ubuntu 22.04 LTS on your windows local system.
+6.Open VM Box, select machine then new to create VM on VM Box.Give machine name and select ISO file path where Ubuntu image is 
+  downloaded and click next.Configure your VM during installation process.
+7.Once VM installed successfully reboot the system.First we need to login with user and password which we add during installation
+  process then we switch to root user.
+8.Once VM with Ubuntu OS is created.We install docker to create containers to run workloads inside the containers.
+
+Docker:
+======
+WHAT IS DOCKER? WHY DO WE USE IT? WHAT ARE THE BENEFITS OF DOCKER?
+=================================================================
+Containerisation Tool:
+1.Docker is one of the containerisation platform tools introduced in 2013 and written in go language which is an open-source freely 
+  available in the market.
+2.Docker is a software installed on Vms to create containers to run workloads. 
+3.Docker is used to build,test,deploy an application faster on a single platform compared to other software developement 
+  traditional approach.
+4.We need not install any seperate OS on docker as it makes use of kernel packages and system resources to run workloads insdie 
+  the container.
+5.There is no burden of additional software installation process like guest OS which makes containers provide light-weight 
+  environment throughout the lifecycle.
+6.It makes container portable which hepls us to migrate from one platform to another platform easily.
+7.Container is a pre-installed box bundled with libraries,packages,dependencies,software code,app code etc. which are required 
+  to run OS and application on container and deploys application faster.
+8.Docker is scalable,reliable and Portable due to its services.Docker provides security to your applications with an isolation 
+  layer on docker host machine. 
+
+WHAT IS KERNEL? WHAT ARE THE KERNEL PACKAGES AND USES?
+=====================================================
+1.Computers can only read binary language.They do not understand human readable launguage.The kernel in linux system acts as an
+  interpreter between the user and application or system.
+2.The job of kernel is to convert the binary language into human readable language and viceversa.
+3.Kernel packages are nothing but Namespaces and Cgroups(Contrl Groups).These are the existing features of linux OS since it
+  is introduced.
+4.The job of kernel packages is to communicate with system's hardware and resources like CPU,memory,storage.
+5.It sits between applications and harware resources to make connection of all your application software to hardware to perform 
+  tasks.
+6.Namespaces are used to create an isolation between the applications and containers running on the same host OS.Cgroups are used
+  to manage resources like CPU,memory,storage allocated to applications.
+7.Docker uses these kernel packages of linux system to communicate with hardware resources on the physical server.
+8.Docker does not install any kernel packages.It makes use of kernel packages of linux system to create isloation between containers
+  and resouce management.
+
+PRE REQUISITE STEPS TO INSTALL DOCKER:
+=====================================
+1.Make sure what kind of OS version we need for the linux system.
+2.Achitecture which is required.
+3.We need to delete the previous version of docker which is already installed before you install the new one.
+4.Delete the folders like docker.io,/var/lib/docker,docker-ce,docker compose,docker-cli. 
+5.Uninstall docker packages and docker engine.
+
+Docker Installation Process:
+===========================
+Installations Methods:
+===================== 
+There are three types of installation methods:
+1.Docker installation from apt docker repository which is also known as package manager.
+2.Manual installation process using "DEB" packages.
+3.Conventional Script.
+
+STEP TO BE FOLLOWED BEFORE INSTALL DOCKER:
+=========================================
+1.First we need to create Keyrings directory under /etc/apt/keyrings/docker.gpg/
+2.We need to download GPG key under the specific directory.
+3.Create the docker repository under /etc/apt/sources.list.d/docker.list
+4.Download docker packages under the specified directiory. It is also known as package management.
+Note:All these steps are also available in the docker official websites.
+
+DOCKER ENGINE STEUP:
+===================
+-> Goto official Docker website https://docs.docker.com/engine/install/ubuntu/
+-> Select the OS platforms like ubuntu,Federos,Redhat etc. according to the choice.
+-> Take the latest or recent previous version of OS according to your system requirement or client requirement.
+-> We can check required OS platforms on docker official website.
+-> Choose the method from the available methods on the website.
+-> First install the pre-requisites packages, then update the index package.Provide read permission to the docker public key.
+-> Update index package whenever you install register new entries or services on docker.
+-> Then install docker engine and other required docker packages.
+-> Docker engine is successfully installed now.Verify the installation of docker by using the command:$docker -v or docker 
+   --version.If docker is successfully installed will get the deatils of docker engine and version of docker.
+-> Start creating the docker containers with help of docker images from dockerhub registry and play around easily.
+
+DOCKER CONTAINER:
+================
+1.What is a container? why do we use it? what are the advantages?
+-> Container is a pre-instlled box, packaged with libraries,services,dependencies,app code etc. which are required to run OS and
+   application.
+-> Docker is a software which helps to build,test,deploy an application faster.
+-> A docker container is nothing but a software installed within the container along with application code,services and other 
+   dependencies to perform the deployment of an application faster.
+-> Developers can directly deploy an application on production environment using containers with minimal configurations.They
+   no need to do it from scratch.
+-> In Docker need not to intsall seperate OS system and kernel packages.It will make use of harware resources and kernel packages
+   of linux system to deliver its multiple functionalities.
+-> It makes docker get rid of additional burden of software installations like OS which makes containers provide light-weight 
+   environment through out the lifecycle.
+-> Docker seperates software or an application from the infrastructure dependency which makes container protable.We can move it
+   from one platform to another platform irrespective of insfrastructure being used beneath.
+-> We can run any application written in any language on any docker environment as it is platform independent.
+-> Containers are independent from each other where multiple applications are running on the same docker host machine
+   and runs as an isolated system on the docker host machine.
+
+FEATURES OF DOCKER CONTAINER:
+============================
+-> There is dynamic allocation of resources.It is an automate process done by docker.
+-> Docker containers are scalable which means it automatically grows and shrinks according to the application requirements.
+-> It is moere securable due to the creation of isolation layer between the conatiners and applications running on the same docker host
+   machine.
+-> Docker containers are portable due its light-weight environment nature.Easily moved from one platform to another platform.
+-> It is also reliable to perform ochestration instead of manual intervention to perform regular tasks.
+
+DOCKER IMAGES:
+=============
+what is an image? why do we use it? what are the types of images?
+================================================================
+-> Once docker engine is setup and ready to go.The next step is to download an image.
+-> An image is a configured OCI file with all the specifications required for OS and application deployment.
+-> An image is also known as repository and the place we store images is known as dockerhub or docker registery.
+-> We can register an account with dockerhub to store images.
+-> we have two types of images or repositories.Public and private repositories.
+-> Authentication and authorization is required to pull and push images from the private image repositories.
+-> We can download an image from public repository without any authentication because it is an open source and freely available
+   on the public cloud but we cannot push an image to the public image repository without authentication.
+-> Images can be shared across multiple containers for configuring containers with same specifications.
+-> We can also build our own images and customise an image with the specific requirements according to the client.
+   Then push it to the public repository with an authentication.
+
+WHAT KIND OF AN IMAGE NEEDS TO BE PREFERRED WHILE CHOOOSING AN IMAGE FROM THE DOCKERHUB:
+=======================================================================================
+-> Three things to be prioritized before choosing as image on the dockerhub registery.It is always recomended to choose
+   an official image which is known as a certified imaged.
+-> Second option needs to be verified publisher.It is an image verified and published by docker community.
+-> Third priority should be sponsered OSS(open source software).This has to be least priority.
+
+INFORMATION ABOUT IMAGES LAYERS:
+===============================
+-> An image is compressed with multiple layers which are converted as folders and stored in the overlay2 storage driver.These 
+   layers are visible while downloading an image.
+-> These layers are nothing but required services,packages and denpendencies that we configure while building an image. 
+-> We can see the layers and size of an image using the command $docker image history followedny image name and tag.
+-> <missing> layers are only availble with the system where it is created.These layers are not available on the everyone's 
+   system.
+-> We cannot predict an actual size of an image due to the existing layers of an image which are already downloaded and shared 
+   with other images.
+-> Images are read only layers that we cannot modify the data of an image.If we want to customize an image along with the 
+   existing data we can do it on containers.
+-> Because conatiners are read-write layers where you can modify or add addtional configurations to the data but we cannot 
+   modify an image data.
+-> Third party providers like JFROG,AWS ECR,GITLAB REPOSITORY,AZURE CONTAINER REGISTRY,GOOGLE CONTAINER REGISTRY many more as 
+   well to store images as repositories.
+-> Use commands #Docker images(list of images),#Docker image history <imagenamne:tag>(deatils of an image),#Docker image build 
+   -t <imagename:tag>(to build an image),#Docker pull <imagename>(pull an image from dockerhub).
+
+DOCKER CONTAINER CREATION:
+========================= 
+HOW TO CREATE A CONTAINER USING DOCKER IMAGE?
+============================================
+-> First we need to download an image to create a container out of it.
+-> Please choose recommended approach before you select an image.Always good to prefer an offical image which is officially 
+   certified.
+-> 
